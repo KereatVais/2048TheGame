@@ -1,6 +1,14 @@
 package Main;
 
+/**
+ * Стратегия для доски с клетками, сдвиг вверх
+ * @author KereatVais
+ */
 public class MoveUpStrategy implements Strategy {
+    /**
+     * Выполняет текущую стратегию
+     * @param board - доска, для которой выполняется стратегия
+     */
     public void execute(Board board) {
         int rowCount = board.getRowCount();
         int columnCount = board.getColumnCount();

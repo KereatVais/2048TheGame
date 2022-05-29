@@ -1,44 +1,46 @@
 package Main;
+/**
+ * Представляет собой доску с клетками, на которой происходят все игровые действий
+ * @author KereatVais
+ */
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
 public class Board extends JPanel {
-
     private int width;
     private int height;
 
-    //public static final int BORDER = 20;         //отступ между клетками
-
-    int border;
-    int tileWidth;
+    private int border;
+    private int tileWidth;
 
     private Tile[][] tiles;
 
     private int rowCount;
     private int columnCount;
 
-    private int score;      //счет в игре
-    public JLabel scoreLabel;
+    private int score;
+    private JLabel scoreLabel;
 
-    public BoardSaver boardSaver;      //класс, управляющий сохранением, для текущего экземпляра доски
+    private BoardSaver boardSaver;
 
-    public Board() {
-        this(4, 4);
-    }
-
+    /**
+     * Создает доску соответствующего размера
+     * @param rowCount - количество строк
+     * @param columnCount - количество столбцов
+     */
     public Board(int rowCount, int columnCount) {
         this.rowCount = rowCount;
         this.columnCount = columnCount;
 
         defineSize();
 
-        tiles = createNewTiles(rowCount, columnCount);
+        tiles = initNewTiles(rowCount, columnCount);
         setTileSize();
         addTilesToBoard();
 
-        addScoreLabel();
+        initScoreLabel();
 
         setPreferredSize(new Dimension(width, height));
         setBackground(Color.decode("#041228"));
@@ -49,20 +51,9 @@ public class Board extends JPanel {
         boardSaver = new BoardSaver(this);
     }
 
-    public void addScoreLabel() {
-        score = 0;
-        scoreLabel = new JLabel("Score: " + Integer.toString(score));
-        scoreLabel.setFont(new Font("SansSerif", Font.PLAIN, 18));
-        scoreLabel.setForeground(Color.WHITE);
-    }
-
-    // добавляет к полю score величину num
-    // и апдейтит jlabel, на котором отображается поле score
-    public void updateScore(int num) {
-        score += num;
-        scoreLabel.setText("Score: " + Integer.toString(score + num));
-    }
-
+    /**
+     * Подбирает размер доски, клеток и промежутка между клетками в зависимости от кол-ва клеток
+     */
     public void defineSize() {
         width = 600;
         height = 600;
@@ -81,51 +72,41 @@ public class Board extends JPanel {
         }
     }
 
-    public void setTileSize() {
-        for (int i = 0; i < rowCount; i++) {
-            for (int j = 0; j < columnCount; j++) {
-                tiles[i][j].width = tileWidth;
-                tiles[i][j].setPreferredSize(new Dimension(tileWidth, tileWidth));
-            }
-        }
+    /**
+     * Создает сохраненение состояния доски
+     * @return новый файл сохранения
+     */
+    public BoardSaveFile createSaveFile() {
+        return new BoardSaveFile(this, tiles, rowCount, columnCount, score);
     }
 
-    //добавляет this.tiles к текущему экземпляру класса Board
-    public void addTilesToBoard() {
-        for (int i = 0; i < rowCount; i++) {
-            for (int j = 0; j < columnCount; j++) {
-                this.add(tiles[i][j]);
-            }
-        }
-
+    /**
+     * Начинает новую игру
+     */
+    public void newGame() {
+        resetScore();
+        reset(tiles);
+        generateNewTile();
+        boardSaver.save();
     }
 
-    //создание нового пустого tiles
-    //rowCount - количество строк
-    //columnCount - количество столбцов
-    public Tile[][] createNewTiles(int rowCount, int columnCount) {
-        Tile[][] tiles = new Tile[rowCount][columnCount];
-        for (int i = 0; i < rowCount; i++) {
-            for (int j = 0; j < columnCount; j++) {
-                tiles[i][j] = new Tile();
-            }
-        }
-        return tiles;
-    }
-
-    // апдейт tiles в текущем экземпляре класса Board
-    // src - из какой доски берем данные
+    /**
+     * Заменяет вес клеток из массива tiles данными из другого массива
+     * @param src - источник данных
+     */
     public void update(Tile[][] src) {
         for (int i = 0; i < rowCount; i++) {
             for (int j = 0; j < columnCount; j++) {
-                this.tiles[i][j].update(src[i][j].getWeight());
+                tiles[i][j].update(src[i][j].getWeight());
             }
         }
     }
 
-    // апдейт
-    // src - из какого tiles берем данные
-    // dest - какой tiles изменяем
+    /**
+     * Заменяет вес клеток в одном массиве данными из другого массива
+     * @param src - источник данных
+     * @param dest - массив, в котором заменяются данные
+     */
     public void update(Tile[][] src, Tile[][] dest) {
         for (int i = 0; i < rowCount; i++) {
             for (int j = 0; j < columnCount; j++) {
@@ -134,6 +115,10 @@ public class Board extends JPanel {
         }
     }
 
+    /**
+     * Заменяет вес клеток в одном массиве нулями
+     * @param tiles - массив, в котором заменяются данные
+     */
     public void reset(Tile[][] tiles) {
         for (int i = 0; i < rowCount; i++) {
             for (int j = 0; j < columnCount; j++) {
@@ -142,24 +127,50 @@ public class Board extends JPanel {
         }
     }
 
-    public BoardSaveFile createSaveFile() {
-        return new BoardSaveFile(this, tiles, rowCount, columnCount);
-    }
-
-    public void newGame() {
-        reset(tiles);
-        generateNewTile();
-        boardSaver.save();
-    }
-
-    public void copy(Tile[][] src, Tile[][] dest) {
+    /**
+     * Устанавливает размер клеток в массиве tiles
+     */
+    public void setTileSize() {
         for (int i = 0; i < rowCount; i++) {
             for (int j = 0; j < columnCount; j++) {
-                dest[i][j].update(src[i][j].getWeight());
+//                tiles[i][j].width = tileWidth;
+                tiles[i][j].setPreferredSize(new Dimension(tileWidth, tileWidth));
             }
         }
     }
 
+    /**
+     * Добавляет к текущей доске массив клеток tiles
+     */
+    public void addTilesToBoard() {
+        for (int i = 0; i < rowCount; i++) {
+            for (int j = 0; j < columnCount; j++) {
+                add(tiles[i][j]);
+            }
+        }
+
+    }
+
+    /**
+     * Инициализирует двумерный массив клеток tiles
+     * @param rowCount - количество строк
+     * @param columnCount - количество столбцов
+     * @return инициализированный двумерный массив клеток
+     */
+    public Tile[][] initNewTiles(int rowCount, int columnCount) {
+        Tile[][] tiles = new Tile[rowCount][columnCount];
+        for (int i = 0; i < rowCount; i++) {
+            for (int j = 0; j < columnCount; j++) {
+                tiles[i][j] = new Tile();
+            }
+        }
+
+        return tiles;
+    }
+
+    /**
+     * Рандомно енерирует новую клетку на свободном месте
+     */
     public void generateNewTile() {
         ArrayList<Tile> emptyTiles = new ArrayList<Tile>();
         for (int i = 0; i < rowCount; i++) {
@@ -173,56 +184,137 @@ public class Board extends JPanel {
         emptyTiles.get(newTileIdx).update(newTileNumber);
     }
 
+    /**
+     * Возвращает ссылку на двумерный массив клеток
+     * @return ссылку на двумерный массив клеток
+     */
+    public Tile[][] getTiles() {
+        return tiles;
+    }
+
+    /**
+     * Инициализирует счет и ярлык со счетом
+     */
+    public void initScoreLabel() {
+        score = 0;
+        scoreLabel = new JLabel("Score: " + Integer.toString(score));
+        scoreLabel.setFont(new Font("Tahoma", Font.PLAIN, 24));
+        scoreLabel.setForeground(Color.WHITE);
+    }
+
+    /**
+     * Увеличивает счет на передаваемую велину и обновляет ярлык со счетом
+     * @param num - величина, на которую увеличивается счет
+     */
+    public void updateScore(int num) {
+        score += num;
+        scoreLabel.setText("Score: " + Integer.toString(score));
+    }
+
+    /**
+     * Обнуляет счет
+     */
+    public void resetScore() {
+        score = 0;
+        scoreLabel.setText("Score: " + Integer.toString(0));
+    }
+
+    /**
+     * Возвращает счет
+     * @return счет
+     */
+    public int getScore() {
+        return score;
+    }
+
+    /**
+     * Устанавливает счет
+     * @param score - счет
+     */
+    public void setScore(int score) {
+        this.score = score;
+        scoreLabel.setText("Score: " + Integer.toString(score));
+    }
+
+    /**
+     * Возвращает ссылку на ярлык со счетом
+     * @return ссылку на ярлык со счетом
+     */
+    public JLabel getScoreLabel() {
+        return scoreLabel;
+    }
+
+    /**
+     * Возвращает количество строк
+     * @return количество строк
+     */
     public int getRowCount() {
         return rowCount;
     }
 
+    /**
+     * Устанавливает количество строк
+     * @param rowCount - количество строк
+     */
     public void setRowCount(int rowCount) {
         this.rowCount = rowCount;
     }
 
+    /**
+     * Возвращает количество столбцов
+     * @return количество столбцов
+     */
     public int getColumnCount() {
         return columnCount;
     }
 
+    /**
+     * Устанавливает количество столбцов
+     * @param columnCount - количество столбцов
+     */
     public void setColumnCount(int columnCount) {
         this.columnCount = columnCount;
     }
 
+    /**
+     * Возвращает ширину доски
+     * @return ширину доски
+     */
     @Override
     public int getWidth() {
         return width;
     }
 
+    /**
+     * Устанавливает ширину доски
+     * @param width - ширину доски
+     */
     public void setWidth(int width) {
         this.width = width;
     }
 
+    /**
+     * Возвращает высоту доски
+     * @return высоту доски
+     */
     @Override
     public int getHeight() {
         return height;
     }
 
+    /**
+     * Устанавливает высоту доски
+     * @param height - высоту доски
+     */
     public void setHeight(int height) {
         this.height = height;
     }
 
-    public Tile[][] getTiles() {
-        return tiles;
-    }
-
+    /**
+     * Возвращает ссылку на экземпляр класса, отвечающего за сохранение доски
+     * @return ссылку на экземпляр класса, отвечающего за сохранение доски
+     */
     public BoardSaver getBoardSaver() {
         return boardSaver;
-    }
-
-    public int getScore() {
-        return score;
-    }
-
-    public void setScore(int score) { this.score = score;
-    }
-
-    public JLabel getScoreLabel() {
-        return scoreLabel;
     }
 }

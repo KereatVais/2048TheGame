@@ -7,6 +7,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+/**
+ * Представляет собой фрейм с доской
+ * @author KereatVais
+ */
 public class BoardFrame extends JFrame implements MyFrame, KeyListener {
     private Board board;
     private BoardSaver boardSaver;
@@ -22,6 +26,9 @@ public class BoardFrame extends JFrame implements MyFrame, KeyListener {
 
     private Context context;
 
+    /**
+     * Создает фрейм и настраивает его
+     */
     @Override
     public void createFrame() {
         width = 800;
@@ -36,20 +43,32 @@ public class BoardFrame extends JFrame implements MyFrame, KeyListener {
         addKeyListener(this);
     }
 
+    /**
+     * Инициализирует компоненты
+     */
     private void initComponents() {
         context = new Context();
         layout = new SpringLayout();
         mainPanel = new JPanel();
     }
 
+    /**
+     * Добавляет кнопки к фрейму
+     */
     @Override
     public void addButtons() {
         addUndoButton();
         addNewGameButton();
     }
 
+    /**
+     * Добавляет кнопку отмены к фрейму
+     */
     private void addUndoButton() {
         undoButton = new JButton("Undo");
+        undoButton.setBackground(Color.WHITE);
+        undoButton.setForeground(Color.decode("#041228"));
+        undoButton.setFont(new Font("Tahoma", Font.BOLD, 14));
         layout.putConstraint(SpringLayout.EAST, undoButton, -100, SpringLayout.EAST, mainPanel);
         layout.putConstraint(SpringLayout.NORTH, undoButton, 40, SpringLayout.NORTH, mainPanel);
         mainPanel.add(undoButton);
@@ -57,15 +76,21 @@ public class BoardFrame extends JFrame implements MyFrame, KeyListener {
         undoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                board.boardSaver.undo();
+                board.getBoardSaver().undo();
             }
         });
 
         undoButton.setFocusable(false);
     }
 
+    /**
+     * Добавляет кнопку новой игры к фрейму
+     */
     private void addNewGameButton() {
         newGameButton = new JButton("New game");
+        newGameButton.setBackground(Color.WHITE);
+        newGameButton.setForeground(Color.decode("#041228"));
+        newGameButton.setFont(new Font("Tahoma", Font.BOLD, 14));
         layout.putConstraint(SpringLayout.EAST, newGameButton, -50, SpringLayout.WEST, undoButton);
         layout.putConstraint(SpringLayout.NORTH, newGameButton, 40, SpringLayout.NORTH, mainPanel);
         mainPanel.add(newGameButton);
@@ -80,18 +105,29 @@ public class BoardFrame extends JFrame implements MyFrame, KeyListener {
         newGameButton.setFocusable(false);
     }
 
+    /**
+     * Добавляет графические элементы к фрейму
+     */
     @Override
     public void addGraphics() {
         addMainPanel();
         addScoreLabel();
     }
 
+    /**
+     * Добавляет главную панель к фрейму
+     */
     private void addMainPanel() {
         mainPanel.setLayout(layout);
         mainPanel.setBackground(Color.decode("#323657"));
         add(mainPanel);
     }
 
+    /**
+     * Добавляет доску к фрейму
+     * @param rowCount - количество строк
+     * @param columnCount - количество столбцов
+     */
     @Override
     public void addBoard(int rowCount, int columnCount) {
         board = new Board(rowCount, columnCount);
@@ -102,21 +138,27 @@ public class BoardFrame extends JFrame implements MyFrame, KeyListener {
         mainPanel.add(board);
     }
 
+    /**
+     * Добавляет ярлык со счетом
+     */
     private void addScoreLabel() {
-        mainPanel.add(board.scoreLabel);
-        layout.putConstraint(SpringLayout.WEST, board.scoreLabel, 100, SpringLayout.WEST, mainPanel);
-        layout.putConstraint(SpringLayout.NORTH, board.scoreLabel, 40, SpringLayout.NORTH, mainPanel);
+        mainPanel.add(board.getScoreLabel());
+        layout.putConstraint(SpringLayout.WEST, board.getScoreLabel(), 100, SpringLayout.WEST, mainPanel);
+        layout.putConstraint(SpringLayout.NORTH, board.getScoreLabel(), 40, SpringLayout.NORTH, mainPanel);
     }
 
-    @Override
-    public void closeFrame() {
-
-    }
-
+    /**
+     * Обрабатывает нажатие кнопки на клавиатуре
+     * @param e - событие нажатия на кнопку
+     */
     @Override
     public void keyTyped(KeyEvent e) {
     }
 
+    /**
+     * Обрабатывает нажатие кнопки на клавиатуре
+     * @param e - событие нажатия на кнопку
+     */
     @Override
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_UP) {
@@ -134,6 +176,10 @@ public class BoardFrame extends JFrame implements MyFrame, KeyListener {
         context.executeStrategy();
     }
 
+    /**
+     * Обрабатывает нажатие кнопки на клавиатуре
+     * @param e - событие нажатия на кнопку
+     */
     @Override
     public void keyReleased(KeyEvent e) {
     }

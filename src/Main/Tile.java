@@ -3,39 +3,59 @@ package Main;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Представляют собой клетку
+ * @author KereatVais
+ */
 public class Tile extends JPanel {
     private Color tileColor;
     private Color textColor;
-    private Font tileFont = new Font("SansSerif", Font.BOLD, 32);
+    private Font tileFont;
 
-    private int weight;                 //число, написанное на клетке, назовем это "вес"
+    private int weight;
 
-    public int width;
+    private JLabel weightLabel;
 
-    public JLabel weightLabel;
-
+    /**
+     * Конструктор без параметров, который создает пустую клетку
+     */
     public Tile() {
         this(0);
     }
 
+    /**
+     * Конструктор с параметрами, который создает клетку с заданным весом
+     * @param weight - вес клетки
+     */
     public Tile(int weight) {
         this.weight = weight;
 
         weightLabel= new JLabel(String.valueOf(weight), SwingConstants.CENTER);
-        weightLabel.setVerticalAlignment(SwingConstants.BOTTOM);
-        add(weightLabel);
+        weightLabel.setVerticalAlignment(SwingConstants.CENTER);
+        this.setLayout(new BorderLayout());
+        add(weightLabel, BorderLayout.CENTER);
+
+        tileFont = new Font("Tahoma", Font.BOLD, 32);
 
         update(weight);
     }
 
+    /**
+     * Заменяет вес клетки соответствующим числом и изменяет вид клетки в соответствие с весом
+     * @param num - число, которым заменяется текущий вес
+     */
     public void update(int num) {
         weight = num;
         weightLabel.setText(num == 0? " " : String.valueOf(weight));
         defineColor(num);
     }
 
-    public void defineColor(int num) {
-        switch (num) {
+    /**
+     * Определяет цвет клетки в зависимости от веса
+     * @param weight - вес
+     */
+    public void defineColor(int weight) {
+        switch (weight) {
             case 0:
                 tileColor = Color.decode("#898EB3");
                 textColor = Color.BLACK;
@@ -88,18 +108,15 @@ public class Tile extends JPanel {
         setBackground(tileColor);
         weightLabel.setForeground(textColor);
         weightLabel.setFont(tileFont);
+
     }
 
+    /**
+     * Возвращает вес клетки
+     * @return вес клетки
+     */
     public int getWeight() {
         return weight;
-    }
-
-    public Color getTileColor() {
-        return tileColor;
-    }
-
-    public void setTileColor(Color tileColor) {
-        this.tileColor = tileColor;
     }
 
 }

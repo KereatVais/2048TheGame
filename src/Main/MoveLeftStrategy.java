@@ -1,8 +1,14 @@
 package Main;
 
-import javax.swing.*;
-
+/**
+ * Стратегия для доски с клетками, сдвиг влево
+ * @author KereatVais
+ */
 public class MoveLeftStrategy implements Strategy{
+    /**
+     * Выполняет текущую стратегию
+     * @param board - доска, для которой выполняется стратегия
+     */
     public void execute(Board board) {
         int rowCount = board.getRowCount();
         int columnCount = board.getColumnCount();

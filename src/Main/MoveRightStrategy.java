@@ -1,6 +1,14 @@
 package Main;
 
+/**
+ * Стратегия для доски с клетками, сдвиг вправо
+ * @author KereatVais
+ */
 public class MoveRightStrategy implements Strategy {
+    /**
+     * Выполняет текущую стратегию
+     * @param board - доска, для которой выполняется стратегия
+     */
     public void execute(Board board) {
         int rowCount = board.getRowCount();
         int columnCount = board.getColumnCount();

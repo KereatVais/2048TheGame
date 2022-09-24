@@ -5,7 +5,7 @@ package Main;
  * @author KereatVais
  */
 public class BoardSaveFile {
-    private Board board;
+    private Board BOARD;
     private Tile[][] tiles;
     private int rowCount;
     private int columnCount;

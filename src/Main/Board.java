@@ -9,8 +9,8 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class Board extends JPanel {
-    private int width;
-    private int height;
+    private int WIDTH;
+    private int HEIGHT;
 
     private int border;
     private int tileWidth;

@@ -6,8 +6,8 @@ import java.util.ArrayList;
 
 public class Board extends JPanel {
 
-    private int width;
-    private int height;
+    public int width;
+    public int height;
 
     //public static final int BORDER = 20;         //отступ между клетками
 

@@ -4,7 +4,7 @@ package Main;
  * Контекст, который отвечает за управление стратегиями
  */
 public class Context {
-    private Strategy strategy;
+    public Strategy strategy;
     private Board board;
     private BoardSaver boardSaver;
 

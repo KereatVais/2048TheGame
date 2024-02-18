@@ -5,6 +5,7 @@ package Main;
  */
 
 import javax.swing.*;
+import javax.swing.border.AbstractBorder;
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -43,7 +44,11 @@ public class Board extends JPanel {
         initScoreLabel();
 
         setPreferredSize(new Dimension(width, height));
-        setBackground(Color.decode("#041228"));
+
+        AbstractBorder brdr = new TextBubbleBorder(Color.BLACK,0,40,40);
+        setBorder(brdr);
+
+        setBackground(Color.decode("#292828"));
         setLayout(new FlowLayout(FlowLayout.LEADING, border, border));
 
         generateNewTile();
@@ -57,18 +62,19 @@ public class Board extends JPanel {
     public void defineSize() {
         width = 600;
         height = 600;
+
         if (rowCount == 4 && columnCount == 4) {
-            tileWidth = 120;
-            border = 24;
+            tileWidth = 124;
+            border = 4;
         } else if (rowCount == 5 && columnCount == 5) {
-            tileWidth = 96;
-            border = 20;
+            tileWidth = 98;
+            border = 4;
         } else if (rowCount == 6 && columnCount == 6) {
-            tileWidth = 86;
-            border = 12;
+            tileWidth = 84;
+            border = 2;
         } else if (rowCount == 7 && columnCount == 7) {
             tileWidth = 72;
-            border = 12;
+            border = 2;
         }
     }
 
@@ -198,7 +204,7 @@ public class Board extends JPanel {
     public void initScoreLabel() {
         score = 0;
         scoreLabel = new JLabel("Score: " + Integer.toString(score));
-        scoreLabel.setFont(new Font("Tahoma", Font.PLAIN, 24));
+        scoreLabel.setFont(new Font("Serif", Font.BOLD, 24));
         scoreLabel.setForeground(Color.WHITE);
     }
 

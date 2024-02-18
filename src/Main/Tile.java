@@ -1,6 +1,7 @@
 package Main;
 
 import javax.swing.*;
+import javax.swing.border.AbstractBorder;
 import java.awt.*;
 
 /**
@@ -33,9 +34,13 @@ public class Tile extends JPanel {
         weightLabel= new JLabel(String.valueOf(weight), SwingConstants.CENTER);
         weightLabel.setVerticalAlignment(SwingConstants.CENTER);
         this.setLayout(new BorderLayout());
+
+        AbstractBorder brdr = new TextBubbleBorder(Color.BLACK,0,40,0);
+        this.setBorder(brdr);
+
         add(weightLabel, BorderLayout.CENTER);
 
-        tileFont = new Font("Tahoma", Font.BOLD, 32);
+        tileFont = new Font("Serif", Font.BOLD, 20);
 
         update(weight);
     }
@@ -57,51 +62,51 @@ public class Tile extends JPanel {
     public void defineColor(int weight) {
         switch (weight) {
             case 0:
-                tileColor = Color.decode("#898EB3");
+                tileColor = Color.decode("#4d4c4c");
                 textColor = Color.BLACK;
                 break;
             case 2:
-                tileColor = Color.decode("#E7DAAD");
+                tileColor = Color.decode("#eec7fc");
                 textColor = Color.BLACK;
                 break;
             case 4:
-                tileColor = Color.decode("#F0D77F");
-                textColor = Color.BLACK;
+                tileColor = Color.decode("#b295f5");
+                textColor = Color.WHITE;
                 break;
             case 8:
-                tileColor = Color.decode("#EEC637");
-                textColor = Color.BLACK;
+                tileColor = Color.decode("#8b82ed");
+                textColor = Color.WHITE;
                 break;
             case 16:
-                tileColor = Color.decode("#EE9D37");
-                textColor = Color.BLACK;
+                tileColor = Color.decode("#6240f5");
+                textColor = Color.WHITE;
                 break;
             case 32:
-                tileColor = Color.decode("#EE714C");
+                tileColor = Color.decode("#6893f7");
                 textColor = Color.WHITE;
                 break;
             case 64:
-                tileColor = Color.decode("#FF2B00");
+                tileColor = Color.decode("#70c3fa");
                 textColor = Color.WHITE;
                 break;
             case 128:
-                tileColor = Color.decode("#FA3E58");
+                tileColor = Color.decode("#43d8e6");
                 textColor = Color.WHITE;
                 break;
             case 256:
-                tileColor = Color.decode("#E70019");
+                tileColor = Color.decode("#32c79a");
                 textColor = Color.WHITE;
                 break;
             case 512:
-                tileColor = Color.decode("#B80026");
+                tileColor = Color.decode("#00b064");
                 textColor = Color.WHITE;
                 break;
             case 1024:
-                tileColor = Color.decode("#C4006F");
+                tileColor = Color.decode("#00fc65");
                 textColor = Color.WHITE;
                 break;
             case 2048:
-                tileColor = Color.decode("#C4F3F3");
+                tileColor = Color.decode("#90db39");
                 textColor = Color.WHITE;
                 break;
         }

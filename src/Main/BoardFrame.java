@@ -67,8 +67,8 @@ public class BoardFrame extends JFrame implements MyFrame, KeyListener {
     private void addUndoButton() {
         undoButton = new JButton("Undo");
         undoButton.setBackground(Color.WHITE);
-        undoButton.setForeground(Color.decode("#041228"));
-        undoButton.setFont(new Font("Tahoma", Font.BOLD, 14));
+        undoButton.setForeground(Color.decode("#232324"));
+        undoButton.setFont(new Font("Serif", Font.BOLD, 14));
         layout.putConstraint(SpringLayout.EAST, undoButton, -100, SpringLayout.EAST, mainPanel);
         layout.putConstraint(SpringLayout.NORTH, undoButton, 40, SpringLayout.NORTH, mainPanel);
         mainPanel.add(undoButton);
@@ -89,9 +89,9 @@ public class BoardFrame extends JFrame implements MyFrame, KeyListener {
     private void addNewGameButton() {
         newGameButton = new JButton("New game");
         newGameButton.setBackground(Color.WHITE);
-        newGameButton.setForeground(Color.decode("#041228"));
-        newGameButton.setFont(new Font("Tahoma", Font.BOLD, 14));
-        layout.putConstraint(SpringLayout.EAST, newGameButton, -50, SpringLayout.WEST, undoButton);
+        newGameButton.setForeground(Color.decode("#232324"));
+        newGameButton.setFont(new Font("Serif", Font.BOLD, 14));
+        layout.putConstraint(SpringLayout.EAST, newGameButton, -20, SpringLayout.WEST, undoButton);
         layout.putConstraint(SpringLayout.NORTH, newGameButton, 40, SpringLayout.NORTH, mainPanel);
         mainPanel.add(newGameButton);
 
@@ -119,7 +119,7 @@ public class BoardFrame extends JFrame implements MyFrame, KeyListener {
      */
     private void addMainPanel() {
         mainPanel.setLayout(layout);
-        mainPanel.setBackground(Color.decode("#323657"));
+        mainPanel.setBackground(Color.decode("#1f1f1f"));
         add(mainPanel);
     }
 
